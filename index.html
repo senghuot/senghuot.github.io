@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DateMe Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Instagram-like Card -->
+    <main class="profile-card">
+        <div class="image-slider" id="imageSlider">
+            <div class="slider-wrapper" id="sliderWrapper">
+                <!-- Images will be injected by JS -->
+            </div>
+
+            <!-- Navigation Buttons -->
+            <button class="nav-btn prev-btn" id="prevBtn" aria-label="Previous image">
+                <svg viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+                </svg>
+            </button>
+            <button class="nav-btn next-btn" id="nextBtn" aria-label="Next image">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                </svg>
+            </button>
+
+            <!-- Navigation Indicators -->
+            <div class="slider-indicators" id="sliderIndicators">
+                <!-- Indicators injected by JS -->
+            </div>
+
+            <!-- Touch overlay for gestures -->
+            <div class="gesture-zone" id="gestureZone"></div>
+        </div>
+
+        <div class="profile-info">
+            <div class="header">
+                <div class="header-row">
+                    <h1 class="name">Matthew, <span class="age">30</span></h1>
+                    <p class="location">Seattle, WA</p>
+                </div>
+                <p class="job-title">Airbnb Software Engineer</p>
+            </div>
+
+            <div class="bio">
+                <p>Travel & food enthusiast, <br> always chasing the next adventure ✈️🍣</p>
+            </div>
+
+            <div class="tags">
+                <span class="tag">Foodie</span>
+                <span class="tag">Travel</span>
+                <span class="tag">UW Alum 🐶🐾</span>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

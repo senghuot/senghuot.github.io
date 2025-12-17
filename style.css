@@ -1,0 +1,441 @@
+:root {
+    --card-bg: #ffffff;
+    --app-bg: #fafafa;
+    --text-primary: #262626;
+    --text-secondary: #8e8e8e;
+    --border-color: #efefef;
+    --accent-color: #0095f6;
+    /* Instagram blueish */
+    --like-color: #ed4956;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--app-bg);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-primary);
+}
+
+/* Container mimicking a phone view if on desktop, or full width on mobile */
+.profile-card {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    /* Full height mobile feel */
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+@media (min-width: 450px) {
+    .profile-card {
+        height: 85vh;
+        border-radius: 30px;
+        border: 1px solid var(--border-color);
+    }
+}
+
+/* Image Slider */
+.image-slider {
+    position: relative;
+    width: 100%;
+    padding-top: 125%;
+    /* 4:5 Aspect Ratio (Instagram Portrait) */
+    background: #efefef;
+    overflow: hidden;
+}
+
+.slider-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    /* object-fit: cover; removed because .slide is now a container div */
+    display: block;
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+    /* Ensure quote absolute positioning is relative to this */
+}
+
+/* Navigation Buttons */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    z-index: 25;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(4px);
+    opacity: 0.9;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.nav-btn:active {
+    transform: translateY(-50%) scale(0.9);
+}
+
+/* Quote Overlay */
+.quote-overlay {
+    position: absolute;
+    bottom: 30px;
+    /* Above the indicators/bottom edge */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    background: rgba(255, 255, 255, 0.5);
+    /* 50% transparent white */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 12px 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    pointer-events: none;
+    /* Let clicks pass through if needed, though buttons are outside */
+    z-index: 5;
+    /* Above image, below gesture zone? */
+}
+
+/* Play Button */
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    cursor: pointer;
+    z-index: 30;
+    /* Above gesture-zone (20) */
+    transition: transform 0.2s ease, background 0.2s ease;
+    transition: transform 0.2s ease, background 0.2s ease;
+    pointer-events: auto;
+    /* Needs to be clickable */
+}
+
+.play-button:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.play-button svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
+    margin-left: 2px;
+    /* Visual balance for play triangle */
+}
+
+/* Music Button & Animation */
+.music-btn {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(4px);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 25;
+    transition: transform 0.2s, background 0.3s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.music-btn:active {
+    transform: scale(0.9);
+}
+
+.music-btn.playing {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Floating Music Particles */
+.music-particles {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.music-particle {
+    position: absolute;
+    bottom: -20px;
+    font-size: 24px;
+    opacity: 0;
+    transform: translateY(0);
+    animation: floatUp 3s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 0;
+        transform: translateY(0) rotate(0deg);
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-200px) rotate(20deg);
+    }
+}
+
+/* EQ Container - Bottom Right */
+.equalizer-container {
+    position: absolute;
+    bottom: 25px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 25;
+    backdrop-filter: blur(4px);
+    pointer-events: none;
+    /* Let clicks pass through to toggle */
+    opacity: 0;
+    /* Hidden by default */
+    transition: opacity 0.3s;
+}
+
+.equalizer-container.playing {
+    opacity: 1;
+}
+
+.equalizer {
+    display: flex;
+    gap: 3px;
+    height: 14px;
+    align-items: flex-end;
+}
+
+.bar {
+    width: 3px;
+    background: #fff;
+    border-radius: 2px;
+    animation: none;
+    height: 4px;
+}
+
+.equalizer-container.playing .bar {
+    animation: equalize 1s infinite ease-in-out;
+}
+
+
+/* Gesture zone is z-index 20. Quote should be visible but under gesture zone so swipes work over it. */
+/* Current z-indices: slide (auto), gesture-zone (20), nav-btn (25), indicators (30).
+   So z-index 5 is fine. */
+
+.quote-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.quote-icon {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    margin-bottom: 4px;
+    display: block;
+}
+
+.nav-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: #262626;
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
+
+/* Hide navigation on touch devices if preferred, but user asked for buttons specifically */
+@media (hover: none) and (pointer: coarse) {
+    /* Optional: hide buttons on mobile to rely on swipe? 
+       User asked for buttons, so I will keep them visible. */
+}
+
+.gesture-zone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    cursor: grab;
+    /* Ensure buttons are clickable */
+    pointer-events: none;
+}
+
+.gesture-zone:active {
+    cursor: grabbing;
+}
+
+/* Allow pointer events on wrapper ? No, gesture zone handles drag.
+   But we need buttons to catch clicks. 
+   So gesture zone should NOT cover buttons.
+   Actually, gesture zone is z-index 20. Nav buttons z-index 25. 
+   This works.
+   HOWEVER, gesture zone has 'pointer-events: none' above? NO.
+   If gesture zone has pointer-events: none, we can't swipe.
+   Wait, I added pointer-events: none to gesture-zone above. That's a mistake if I want to swipe.
+   Reverting that logic below.
+*/
+
+.gesture-zone {
+    pointer-events: auto;
+}
+
+
+.slider-indicators {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    z-index: 30;
+    pointer-events: none;
+}
+
+.indicator {
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transition: background 0.3s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.indicator.active {
+    background: #fff;
+    transform: scale(1.1);
+}
+
+/* Profile Info */
+.profile-info {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+}
+
+.job-title {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.age {
+    font-weight: 400;
+}
+
+.location {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.bio {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    /* Push to bottom if space allows */
+}
+
+.tag {
+    background: #efefef;
+    padding: 5px 12px;
+    border-radius: 4px;
+    /* Less rounded, more tag-like */
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
