@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Configuration
     const images = [
-        { src: '1.png', quote: "new fren 🦀" },
-        { src: '2.png' },
-        { src: '3.png' }, // No quote
-        { src: '3.5.png', quote: "this can be us! 🥹" }, // No quote
-        { src: 'a.png' }, // No quote
-        { src: 'b.png' }, // No quote
-        { src: '4.png' },
-        { src: '5.png', quote: "be my date! pls!" },
+        { src: '1.jpg', quote: "new fren 🦀" },
+        { src: '2.jpg' },
+        { src: '3.jpg' }, // No quote
+        { src: '3.5.jpg', quote: "this can be us! 🥹" }, // No quote
+        { src: 'a.jpg' }, // No quote
+        { src: 'b.jpg' }, // No quote
+        { src: '4.jpg' },
+        { src: '5.jpg', quote: "be my date! pls!" },
         { src: '8.jpeg', quote: "shipping code, dropping bars #AI🤖", music: 'music.mp3' },
     ];
 
